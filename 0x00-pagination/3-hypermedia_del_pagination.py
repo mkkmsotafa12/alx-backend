@@ -5,6 +5,7 @@ import csv
 import math
 from typing import List, Dict, Any
 
+
 class Server:
     """ Server class to paginate a database of popular baby names."""
     DATA_FILE = "Popular_Baby_Names.csv"
@@ -27,36 +28,38 @@ class Server:
         """ Dataset indexed by sorting position, starting at 0 """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
-            self.__indexed_dataset = {i: dataset[i] for i in range(len(dataset))}
+            self.__indexed_dataset = {i: dataset[i]
+                                      for i in range(len(dataset))}
         return self.__indexed_dataset
 
-    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict[str, Any]:
-        """Get a page from the dataset with hypermedia metadata, resilient to deletions.
+    def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
+        """Get a page from the dataset with hypermedia metadata.
         Parameters:
         index (int): The current start index of the return page.
         page_size (int): The number of items per page.
         Returns:
-        Dict[str, Any]: A dictionary containing pagination metadata and the dataset page. """
+        Dict[str, Any]:
+        A dictionary containing pagination metadata and the dataset page. """
         assert index is None or (isinstance(index, int) and index >= 0)
         assert isinstance(page_size, int) and page_size > 0
 
         indexed_dataset = self.indexed_dataset()
         total_items = len(indexed_dataset)
-        
+
         if index is None:
             index = 0
-        
+
         data = []
         current_index = index
-        
+
         while len(data) < page_size and current_index < total_items:
             if current_index in indexed_dataset:
                 data.append(indexed_dataset[current_index])
             current_index += 1
-        
+
         next_index = current_index if current_index < total_items else None
 
-        return  {
+        return {
             "index": index,
             "next_index": next_index,
             "page_size": len(data),
