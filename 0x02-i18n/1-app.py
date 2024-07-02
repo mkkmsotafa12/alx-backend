@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Basic Babel setup """
+""" Run app module """
 from flask import Flask, render_template
 from flask_babel import Babel
 
