@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Get locale from request """
+""" Run app module """
 from flask import Flask, render_template, request
 from flask_babel import Babel
 app = Flask(__name__)
